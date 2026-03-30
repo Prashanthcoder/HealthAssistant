@@ -1,6 +1,6 @@
 /**
  * Intelligent Virtual Healthcare Assistant
- * Frontend JavaScript Application
+ * Frontend JavaScript Application - Fully Client-Side
  */
 
 // ============================================
@@ -15,20 +15,339 @@ const state = {
 };
 
 // ============================================
+// KNOWLEDGE BASE (Client-Side)
+// ============================================
+const knowledgeBase = {
+    greetings: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening', 'namaste'],
+
+    responses: {
+        greeting: [
+            "Hello! I'm your Intelligent Virtual Healthcare Assistant. How can I help you today? 💙",
+            "Hi there! Welcome to your healthcare companion. What health questions can I answer for you? 🏥",
+            "Greetings! I'm here to provide reliable healthcare information. What would you like to know? 👋"
+        ],
+        default: "I'm here to help with your health questions. I can provide information on symptoms, first aid, nutrition, mental health, and general wellness. What would you like to know?"
+    },
+
+    symptomDatabase: {
+        'fever': {
+            conditions: ['Common Cold', 'Flu', 'Viral Infection', 'Malaria', 'Typhoid', 'COVID-19'],
+            severity: 'moderate',
+            advice: 'Rest, stay hydrated, and monitor temperature. Take paracetamol for fever reduction. See doctor if fever exceeds 103°F (39.4°C) or lasts more than 3 days.'
+        },
+        'headache': {
+            conditions: ['Tension Headache', 'Migraine', 'Sinusitis', 'Eye Strain', 'Dehydration', 'Stress'],
+            severity: 'mild to moderate',
+            advice: 'Rest in a quiet, dark room. Stay hydrated. Over-the-counter pain relievers may help. See doctor if severe or persistent.'
+        },
+        'cough': {
+            conditions: ['Common Cold', 'Flu', 'Bronchitis', 'Pneumonia', 'Asthma', 'Allergies'],
+            severity: 'mild to moderate',
+            advice: 'Stay hydrated, use honey for soothing (if not allergic), and avoid irritants. See doctor if cough persists for more than 2 weeks or produces blood.'
+        },
+        'sore throat': {
+            conditions: ['Common Cold', 'Strep Throat', 'Tonsillitis', 'Allergies', 'Viral Infection'],
+            severity: 'mild to moderate',
+            advice: 'Gargle with warm salt water, drink warm fluids, and rest your voice. See doctor if severe or accompanied by high fever.'
+        },
+        'stomach pain': {
+            conditions: ['Indigestion', 'Gastritis', 'Food Poisoning', 'Constipation', 'IBS', 'Appendicitis'],
+            severity: 'mild to high',
+            advice: 'Avoid spicy and fatty foods. Eat bland foods like BRAT diet (bananas, rice, applesauce, toast). See doctor immediately if severe or localized.'
+        },
+        'nausea': {
+            conditions: ['Food Poisoning', 'Motion Sickness', 'Pregnancy', 'Migraine', 'Viral Infection'],
+            severity: 'mild to moderate',
+            advice: 'Eat small, bland meals. Ginger tea may help. Stay hydrated with small sips. See doctor if persistent or with vomiting.'
+        },
+        'fatigue': {
+            conditions: ['Anemia', 'Thyroid Issues', 'Sleep Disorders', 'Depression', 'Chronic Fatigue', 'Diabetes'],
+            severity: 'moderate',
+            advice: 'Ensure adequate sleep, eat a balanced diet, and exercise regularly. See doctor if persistent for more than 2 weeks.'
+        },
+        'shortness of breath': {
+            conditions: ['Asthma', 'Anxiety', 'Heart Issues', 'Pneumonia', 'COVID-19', 'Allergies'],
+            severity: 'high',
+            advice: '⚠️ Seek immediate medical attention if severe or accompanied by chest pain, sweating, or confusion.'
+        },
+        'chest pain': {
+            conditions: ['Heart Attack', 'Angina', 'Acid Reflux', 'Muscle Strain', 'Anxiety', 'Costochondritis'],
+            severity: 'high',
+            advice: '⚠️ CHEST PAIN CAN BE SERIOUS. Call emergency services (108) immediately, especially if accompanied by sweating, nausea, or arm pain.'
+        },
+        'rash': {
+            conditions: ['Allergic Reaction', 'Eczema', 'Psoriasis', 'Chickenpox', 'Measles', 'Heat Rash'],
+            severity: 'mild to moderate',
+            advice: 'Keep area clean and dry. Avoid scratching. Apply calamine lotion for itching. See doctor if rash spreads rapidly or with fever.'
+        },
+        'dizziness': {
+            conditions: ['Low Blood Pressure', 'Dehydration', 'Inner Ear Problems', 'Anemia', 'Hypoglycemia'],
+            severity: 'mild to moderate',
+            advice: 'Sit or lie down immediately. Stay hydrated. Rise slowly from sitting/lying position. See doctor if frequent or severe.'
+        },
+        'body ache': {
+            conditions: ['Flu', 'Viral Infection', 'Fibromyalgia', 'Overexertion', 'Arthritis'],
+            severity: 'mild to moderate',
+            advice: 'Rest, stay hydrated, and take over-the-counter pain relievers. Warm baths may help. See doctor if persistent.'
+        }
+    },
+
+    healthTopics: {
+        'covid': {
+            keywords: ['covid', 'coronavirus', 'covid-19', 'corona'],
+            response: `COVID-19 Symptoms:
+• Fever or chills
+• Cough
+• Shortness of breath
+• Fatigue
+• Body aches
+• Loss of taste/smell
+• Sore throat
+
+Prevention:
+• Wear masks in crowded places
+• Wash hands frequently
+• Maintain social distance
+• Get vaccinated
+• Avoid touching face
+
+If you suspect COVID-19, get tested and self-isolate until results are available.`
+        },
+        'diabetes': {
+            keywords: ['diabetes', 'blood sugar', 'glucose'],
+            response: `Diabetes Information:
+
+Type 1: Body doesn't produce insulin
+Type 2: Body doesn't use insulin properly
+
+Common Symptoms:
+• Frequent urination
+• Excessive thirst
+• Unexplained weight loss
+• Fatigue
+• Blurred vision
+• Slow healing wounds
+
+Management:
+• Monitor blood sugar regularly
+• Take medications as prescribed
+• Follow a balanced diet
+• Exercise regularly
+• Regular check-ups with doctor`
+        },
+        'blood pressure': {
+            keywords: ['blood pressure', 'hypertension', 'bp high', 'bp low'],
+            response: `Blood Pressure Information:
+
+Normal: Less than 120/80 mmHg
+Elevated: 120-129/less than 80
+High (Stage 1): 130-139/80-89
+High (Stage 2): 140+/90+
+
+Lifestyle Changes:
+• Reduce salt intake
+• Exercise regularly
+• Maintain healthy weight
+• Limit alcohol
+• Quit smoking
+• Manage stress
+• Take medications as prescribed
+
+Monitor regularly and consult your doctor.`
+        },
+        'headache': {
+            keywords: ['headache', 'migraine', 'head pain'],
+            response: `Headache Relief Tips:
+
+Common Causes:
+• Stress and tension
+• Dehydration
+• Lack of sleep
+• Eye strain
+• Sinus issues
+
+Relief Methods:
+• Rest in a quiet, dark room
+• Apply cold or warm compress
+• Stay hydrated
+• Over-the-counter pain relievers
+• Gentle neck massage
+• Deep breathing exercises
+
+See a doctor if headaches are severe, frequent, or accompanied by other symptoms.`
+        },
+        'fever': {
+            keywords: ['fever', 'temperature', 'high temperature'],
+            response: `Fever Management:
+
+Normal body temperature: 98.6°F (37°C)
+Fever: Above 100.4°F (38°C)
+
+Home Care:
+• Rest and stay hydrated
+• Wear light clothing
+• Take paracetamol for comfort
+• Use lukewarm sponge bath
+
+When to See Doctor:
+• Temperature above 103°F (39.4°C)
+• Fever lasts more than 3 days
+• Accompanied by severe headache, rash, or confusion
+• Difficulty breathing
+
+For infants under 3 months, seek medical help for any fever.`
+        },
+        'mental health': {
+            keywords: ['stress', 'anxiety', 'depression', 'mental health', 'worried', 'sad'],
+            response: `Mental Health Support:
+
+Stress Management:
+• Practice deep breathing
+• Exercise regularly
+• Get adequate sleep
+• Connect with loved ones
+• Take breaks from work
+• Practice mindfulness
+
+When to Seek Help:
+• Persistent sadness (>2 weeks)
+• Thoughts of self-harm
+• Inability to function daily
+• Severe anxiety or panic attacks
+
+Resources:
+• Talk to a mental health professional
+• Join support groups
+• Practice self-care daily
+• Consider therapy or counseling
+
+Remember: Seeking help is a sign of strength, not weakness. 💚`
+        },
+        'nutrition': {
+            keywords: ['diet', 'nutrition', 'healthy eating', 'food', 'weight loss'],
+            response: `Healthy Eating Guidelines:
+
+Balanced Diet:
+• Fill half plate with vegetables and fruits
+• Choose whole grains over refined
+• Include lean proteins
+• Use healthy fats (olive oil, nuts)
+• Limit processed foods
+
+Daily Recommendations:
+• 5 servings of fruits/vegetables
+• 8 glasses of water
+• Limit sugar and salt
+• Moderate portion sizes
+• Regular meal times
+
+Tips:
+• Meal prep for the week
+• Read nutrition labels
+• Cook at home more often
+• Eat mindfully without distractions`
+        },
+        'exercise': {
+            keywords: ['exercise', 'workout', 'fitness', 'gym', 'physical activity'],
+            response: `Exercise Recommendations:
+
+WHO Guidelines:
+• 150 minutes moderate activity/week
+• OR 75 minutes vigorous activity/week
+• Muscle-strengthening 2+ days/week
+
+Types of Exercise:
+• Cardio: Walking, running, swimming
+• Strength: Weights, resistance bands
+• Flexibility: Yoga, stretching
+• Balance: Tai chi, balance exercises
+
+Getting Started:
+• Start slow and gradually increase
+• Choose activities you enjoy
+• Set realistic goals
+• Find an exercise buddy
+• Track your progress
+
+Remember: Any movement is better than none! 💪`
+        },
+        'sleep': {
+            keywords: ['sleep', 'insomnia', 'tired', 'rest'],
+            response: `Better Sleep Tips:
+
+Sleep Hygiene:
+• Consistent sleep schedule
+• Cool, dark, quiet bedroom
+• No screens 1 hour before bed
+• Avoid caffeine after 2 PM
+• Limit naps to 20-30 minutes
+
+Bedtime Routine:
+• Read a book
+• Take a warm bath
+• Practice meditation
+• Light stretching
+• Journal your thoughts
+
+Recommended Sleep:
+• Adults: 7-9 hours
+• Teens: 8-10 hours
+• Children: 9-12 hours
+
+See a doctor if sleep problems persist.`
+        },
+        'first aid': {
+            keywords: ['first aid', 'emergency', 'bleeding', 'burn', 'choking', 'cpr'],
+            response: `First Aid Basics:
+
+General Steps:
+1. Ensure scene safety
+2. Check responsiveness
+3. Call emergency services (108) if needed
+4. Provide appropriate first aid
+5. Stay with the person until help arrives
+
+Common Emergencies:
+• Burns: Cool with water, cover with clean cloth
+• Cuts: Apply pressure, clean, bandage
+• Choking: Heimlich maneuver
+• Nosebleed: Lean forward, pinch nose
+• Fracture: Immobilize, don't move
+
+Remember: In serious emergencies, call 108 immediately!`
+        },
+        'medication': {
+            keywords: ['medicine', 'medication', 'drug', 'pill', 'tablet'],
+            response: `Medication Safety:
+
+General Guidelines:
+• Take medications as prescribed
+• Never share prescription drugs
+• Store in cool, dry place
+• Check expiration dates
+• Keep out of reach of children
+
+Over-the-Counter:
+• Paracetamol: Pain and fever relief
+• Ibuprofen: Pain and inflammation
+• Antihistamines: Allergies
+• Antacids: Indigestion
+
+⚠️ Always consult a doctor before starting any new medication, especially if you have existing health conditions or take other medications.`
+        }
+    }
+};
+
+// ============================================
 // DOM ELEMENTS
 // ============================================
 const elements = {
-    // Sidebar
     sidebar: document.getElementById('sidebar'),
     sidebarToggle: document.getElementById('sidebarToggle'),
     menuToggle: document.getElementById('menuToggle'),
     navItems: document.querySelectorAll('.sidebar-nav li'),
-
-    // Header
     clearChatBtn: document.getElementById('clearChat'),
     helpBtn: document.getElementById('helpBtn'),
-
-    // Chat Section
     chatSection: document.getElementById('chatSection'),
     welcomeScreen: document.getElementById('welcomeScreen'),
     chatMessages: document.getElementById('chatMessages'),
@@ -37,25 +356,17 @@ const elements = {
     typingIndicator: document.getElementById('typingIndicator'),
     charCount: document.getElementById('charCount'),
     suggestionChips: document.querySelectorAll('.chip'),
-
-    // Symptoms Section
     symptomsSection: document.getElementById('symptomsSection'),
     symptomCards: document.querySelectorAll('.symptom-card'),
     selectedList: document.getElementById('selectedList'),
     checkSymptomsBtn: document.getElementById('checkSymptomsBtn'),
     symptomsResults: document.getElementById('symptomsResults'),
-
-    // First Aid Section
     firstaidSection: document.getElementById('firstaidSection'),
     firstaidCards: document.querySelectorAll('.firstaid-card'),
     firstaidDetail: document.getElementById('firstaidDetail'),
-
-    // Health Tips Section
     healthtipsSection: document.getElementById('healthtipsSection'),
     tipCategories: document.querySelectorAll('.tip-category'),
     tipsContainer: document.getElementById('tipsContainer'),
-
-    // Modals
     helpModal: document.getElementById('helpModal'),
     emergencyModal: document.getElementById('emergencyModal'),
     closeModal: document.getElementById('closeModal'),
@@ -68,6 +379,7 @@ const elements = {
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
     initializeApp();
+    addEntranceAnimations();
 });
 
 function initializeApp() {
@@ -75,16 +387,26 @@ function initializeApp() {
     setupTextareaAutoResize();
     loadHealthTips('general');
 
-    // Add initial greeting
     setTimeout(() => {
-        addMessage('assistant', "Hello! I'm your Intelligent Virtual Healthcare Assistant. How can I help you today?");
-    }, 500);
+        addMessage('assistant', "Hello! I'm your Intelligent Virtual Healthcare Assistant. How can I help you today? 💙");
+    }, 600);
+}
+
+function addEntranceAnimations() {
+    document.querySelectorAll('.feature, .symptom-card, .firstaid-card, .tip-card').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        setTimeout(() => {
+            el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, 100 + i * 50);
+    });
 }
 
 function setupEventListeners() {
-    // Sidebar navigation
-    elements.sidebarToggle.addEventListener('click', toggleSidebar);
-    elements.menuToggle.addEventListener('click', toggleMobileSidebar);
+    elements.sidebarToggle?.addEventListener('click', toggleSidebar);
+    elements.menuToggle?.addEventListener('click', toggleMobileSidebar);
 
     elements.navItems.forEach(item => {
         item.addEventListener('click', () => {
@@ -97,20 +419,17 @@ function setupEventListeners() {
                 handleTopicClick(topic);
             }
 
-            // Update active state
             elements.navItems.forEach(nav => nav.classList.remove('active'));
             item.classList.add('active');
         });
     });
 
-    // Chat functionality
-    elements.sendBtn.addEventListener('click', sendMessage);
-    elements.messageInput.addEventListener('keydown', handleInputKeydown);
-    elements.messageInput.addEventListener('input', handleInputChange);
-    elements.clearChatBtn.addEventListener('click', clearChat);
+    elements.sendBtn?.addEventListener('click', sendMessage);
+    elements.messageInput?.addEventListener('keydown', handleInputKeydown);
+    elements.messageInput?.addEventListener('input', handleInputChange);
+    elements.clearChatBtn?.addEventListener('click', clearChat);
 
-    // Suggestion chips
-    elements.suggestionChips.forEach(chip => {
+    elements.suggestionChips?.forEach(chip => {
         chip.addEventListener('click', () => {
             const question = chip.dataset.question;
             elements.messageInput.value = question;
@@ -118,19 +437,16 @@ function setupEventListeners() {
         });
     });
 
-    // Symptom checker
-    elements.symptomCards.forEach(card => {
+    elements.symptomCards?.forEach(card => {
         card.addEventListener('click', () => toggleSymptom(card));
     });
-    elements.checkSymptomsBtn.addEventListener('click', checkSymptoms);
+    elements.checkSymptomsBtn?.addEventListener('click', checkSymptoms);
 
-    // First aid cards
-    elements.firstaidCards.forEach(card => {
+    elements.firstaidCards?.forEach(card => {
         card.addEventListener('click', () => showFirstAidDetail(card.dataset.emergency));
     });
 
-    // Health tips categories
-    elements.tipCategories.forEach(category => {
+    elements.tipCategories?.forEach(category => {
         category.addEventListener('click', () => {
             elements.tipCategories.forEach(cat => cat.classList.remove('active'));
             category.classList.add('active');
@@ -138,18 +454,14 @@ function setupEventListeners() {
         });
     });
 
-    // Modals
-    elements.helpBtn.addEventListener('click', () => openModal(elements.helpModal));
-    elements.closeModal.addEventListener('click', () => closeModal(elements.helpModal));
-    elements.emergencyBanner.addEventListener('click', () => openModal(elements.emergencyModal));
-    elements.closeEmergencyModal.addEventListener('click', () => closeModal(elements.emergencyModal));
+    elements.helpBtn?.addEventListener('click', () => openModal(elements.helpModal));
+    elements.closeModal?.addEventListener('click', () => closeModal(elements.helpModal));
+    elements.emergencyBanner?.addEventListener('click', () => openModal(elements.emergencyModal));
+    elements.closeEmergencyModal?.addEventListener('click', () => closeModal(elements.emergencyModal));
 
-    // Close modals on backdrop click
     document.querySelectorAll('.modal').forEach(modal => {
         modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal(modal);
-            }
+            if (e.target === modal) closeModal(modal);
         });
     });
 }
@@ -169,12 +481,12 @@ function toggleMobileSidebar() {
 function switchSection(sectionName) {
     state.currentSection = sectionName;
 
-    // Hide all sections
     document.querySelectorAll('.content-section').forEach(section => {
         section.classList.remove('active');
+        section.style.opacity = '0';
+        section.style.transform = 'translateX(20px)';
     });
 
-    // Show selected section
     const sectionMap = {
         'chat': elements.chatSection,
         'symptoms': elements.symptomsSection,
@@ -183,10 +495,16 @@ function switchSection(sectionName) {
     };
 
     if (sectionMap[sectionName]) {
-        sectionMap[sectionName].classList.add('active');
+        const section = sectionMap[sectionName];
+        section.classList.add('active');
+
+        setTimeout(() => {
+            section.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            section.style.opacity = '1';
+            section.style.transform = 'translateX(0)';
+        }, 50);
     }
 
-    // Close mobile sidebar
     elements.sidebar.classList.remove('open');
 }
 
@@ -205,10 +523,11 @@ function handleTopicClick(topic) {
 }
 
 // ============================================
-// CHAT FUNCTIONS
+// CHAT FUNCTIONS - CLIENT SIDE
 // ============================================
 function setupTextareaAutoResize() {
     const textarea = elements.messageInput;
+    if (!textarea) return;
 
     textarea.addEventListener('input', function () {
         this.style.height = 'auto';
@@ -226,60 +545,74 @@ function handleInputKeydown(e) {
 function handleInputChange() {
     const length = elements.messageInput.value.length;
     elements.charCount.textContent = `${length}/500`;
+    elements.charCount.classList.toggle('warning', length >= 450);
+}
 
-    if (length >= 450) {
-        elements.charCount.classList.add('warning');
-    } else {
-        elements.charCount.classList.remove('warning');
+function processMessage(message) {
+    const lowerMsg = message.toLowerCase();
+
+    // Check for greetings
+    if (knowledgeBase.greetings.some(g => lowerMsg.includes(g))) {
+        return getRandomResponse('greeting');
     }
+
+    // Check health topics
+    for (const [topic, data] of Object.entries(knowledgeBase.healthTopics)) {
+        if (data.keywords.some(kw => lowerMsg.includes(kw))) {
+            return data.response;
+        }
+    }
+
+    // Check for symptoms
+    const foundSymptoms = [];
+    for (const [symptom, data] of Object.entries(knowledgeBase.symptomDatabase)) {
+        if (lowerMsg.includes(symptom)) {
+            foundSymptoms.push({ symptom, ...data });
+        }
+    }
+
+    if (foundSymptoms.length > 0) {
+        let response = "I noticed you mentioned some symptoms. Here's what I found:\n\n";
+        foundSymptoms.forEach(s => {
+            response += `**${s.symptom.charAt(0).toUpperCase() + s.symptom.slice(1)}**\n`;
+            response += `• Possible conditions: ${s.conditions.join(', ')}\n`;
+            response += `• Advice: ${s.advice}\n\n`;
+        });
+        response += "⚠️ Remember: This is general information. Please consult a healthcare professional for proper diagnosis and treatment.";
+        return response;
+    }
+
+    // Default response
+    return knowledgeBase.responses.default;
+}
+
+function getRandomResponse(type) {
+    const responses = knowledgeBase.responses[type];
+    return responses[Math.floor(Math.random() * responses.length)];
 }
 
 async function sendMessage() {
     const message = elements.messageInput.value.trim();
-
     if (!message || state.isTyping) return;
 
-    // Hide welcome screen
     elements.welcomeScreen.style.display = 'none';
-
-    // Add user message
     addMessage('user', message);
 
-    // Clear input
     elements.messageInput.value = '';
     elements.messageInput.style.height = 'auto';
     elements.charCount.textContent = '0/500';
 
-    // Show typing indicator
     showTypingIndicator();
 
-    try {
-        // Send to backend
-        const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message })
-        });
+    // Simulate processing delay for realism
+    await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 700));
 
-        const data = await response.json();
-
-        hideTypingIndicator();
-
-        if (data.success) {
-            addMessage('assistant', data.response, data.suggestions);
-        } else {
-            addMessage('assistant', 'I apologize, but I encountered an error. Please try again.');
-        }
-    } catch (error) {
-        hideTypingIndicator();
-        addMessage('assistant', 'Sorry, I\'m having trouble connecting. Please check your internet connection and try again.');
-        console.error('Chat error:', error);
-    }
+    const response = processMessage(message);
+    hideTypingIndicator();
+    addMessage('assistant', response);
 }
 
-function addMessage(type, text, suggestions = []) {
+function addMessage(type, text) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${type}`;
 
@@ -292,29 +625,25 @@ function addMessage(type, text, suggestions = []) {
         minute: '2-digit'
     });
 
-    let suggestionsHtml = '';
-    if (suggestions && suggestions.length > 0) {
-        suggestionsHtml = `
-            <div class="message-suggestions">
-                ${suggestions.map(s => `<button onclick="useSuggestion('${s}')">${s}</button>`).join('')}
-            </div>
-        `;
-    }
-
     messageDiv.innerHTML = `
         <div class="message-avatar">${avatar}</div>
         <div class="message-content">
-            <div class="message-text">${escapeHtml(text)}</div>
+            <div class="message-text">${formatMessageText(text)}</div>
             <div class="message-time">${time}</div>
-            ${suggestionsHtml}
         </div>
     `;
 
     elements.chatMessages.appendChild(messageDiv);
     scrollToBottom();
-
-    // Store message
     state.messages.push({ type, text, time });
+}
+
+function formatMessageText(text) {
+    // Convert markdown-style formatting to HTML
+    return text
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/•/g, '&bull;')
+        .replace(/\n/g, '<br>');
 }
 
 function useSuggestion(text) {
@@ -335,7 +664,12 @@ function hideTypingIndicator() {
 
 function scrollToBottom() {
     const container = document.querySelector('.chat-container');
-    container.scrollTop = container.scrollHeight;
+    if (container) {
+        container.scrollTo({
+            top: container.scrollHeight,
+            behavior: 'smooth'
+        });
+    }
 }
 
 function clearChat() {
@@ -344,15 +678,14 @@ function clearChat() {
         elements.welcomeScreen.style.display = 'flex';
         state.messages = [];
 
-        // Add greeting back
         setTimeout(() => {
-            addMessage('assistant', "Hello! I'm your Intelligent Virtual Healthcare Assistant. How can I help you today?");
+            addMessage('assistant', "Hello! I'm your Intelligent Virtual Healthcare Assistant. How can I help you today? 💙");
         }, 300);
     }
 }
 
 // ============================================
-// SYMPTOM CHECKER FUNCTIONS
+// SYMPTOM CHECKER - CLIENT SIDE
 // ============================================
 function toggleSymptom(card) {
     const symptom = card.dataset.symptom;
@@ -360,9 +693,12 @@ function toggleSymptom(card) {
     if (state.selectedSymptoms.includes(symptom)) {
         state.selectedSymptoms = state.selectedSymptoms.filter(s => s !== symptom);
         card.classList.remove('selected');
+        card.style.transform = 'scale(1)';
     } else {
         state.selectedSymptoms.push(symptom);
         card.classList.add('selected');
+        card.style.transform = 'scale(1.05)';
+        setTimeout(() => card.style.transform = 'scale(1)', 200);
     }
 
     updateSelectedSymptoms();
@@ -376,9 +712,9 @@ function updateSelectedSymptoms() {
         elements.checkSymptomsBtn.disabled = true;
     } else {
         list.innerHTML = state.selectedSymptoms.map(symptom => `
-            <div class="selected-tag">
+            <div class="selected-tag" style="animation: fadeInScale 0.3s ease;">
                 ${formatSymptomName(symptom)}
-                <button onclick="removeSymptom('${symptom}')">
+                <button onclick="removeSymptom('${symptom}')" aria-label="Remove ${symptom}">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -389,7 +725,8 @@ function updateSelectedSymptoms() {
 
 function removeSymptom(symptom) {
     state.selectedSymptoms = state.selectedSymptoms.filter(s => s !== symptom);
-    document.querySelector(`[data-symptom="${symptom}"]`).classList.remove('selected');
+    const card = document.querySelector(`[data-symptom="${symptom}"]`);
+    if (card) card.classList.remove('selected');
     updateSelectedSymptoms();
 }
 
@@ -399,35 +736,32 @@ function formatSymptomName(symptom) {
     ).join(' ');
 }
 
-async function checkSymptoms() {
+function checkSymptoms() {
     if (state.selectedSymptoms.length === 0) return;
 
-    elements.checkSymptomsBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
-    elements.checkSymptomsBtn.disabled = true;
+    const btn = elements.checkSymptomsBtn;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+    btn.disabled = true;
 
-    try {
-        const response = await fetch('/api/symptoms-checker', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ symptoms: state.selectedSymptoms })
+    // Simulate analysis delay
+    setTimeout(() => {
+        const results = [];
+
+        state.selectedSymptoms.forEach(symptom => {
+            const data = knowledgeBase.symptomDatabase[symptom];
+            if (data) {
+                results.push({
+                    symptom,
+                    ...data
+                });
+            }
         });
 
-        const data = await response.json();
+        displaySymptomResults(results);
 
-        if (data.success) {
-            displaySymptomResults(data.conditions);
-        } else {
-            alert('Error checking symptoms. Please try again.');
-        }
-    } catch (error) {
-        console.error('Symptom check error:', error);
-        alert('Error connecting to server. Please try again.');
-    } finally {
-        elements.checkSymptomsBtn.innerHTML = '<i class="fas fa-search"></i> Check Symptoms';
-        elements.checkSymptomsBtn.disabled = false;
-    }
+        btn.innerHTML = '<i class="fas fa-search"></i> Check Symptoms';
+        btn.disabled = false;
+    }, 1200);
 }
 
 function displaySymptomResults(conditions) {
@@ -435,31 +769,32 @@ function displaySymptomResults(conditions) {
 
     if (!conditions || conditions.length === 0) {
         resultsDiv.innerHTML = `
-            <div class="result-card">
+            <div class="result-card" style="animation: slideUp 0.5s ease;">
                 <h4><i class="fas fa-info-circle"></i> No Specific Conditions Found</h4>
                 <p>Based on your symptoms, we couldn't identify specific conditions. Please consult a healthcare professional for proper diagnosis.</p>
             </div>
         `;
     } else {
-        resultsDiv.innerHTML = conditions.map(condition => `
-            <div class="result-card ${condition.severity === 'high' ? 'high-severity' : ''}">
+        resultsDiv.innerHTML = conditions.map((condition, i) => `
+            <div class="result-card ${condition.severity === 'high' ? 'high-severity' : ''}" 
+                 style="animation: slideUp 0.5s ease ${i * 0.1}s both;">
                 <h4>
                     ${condition.severity === 'high' ? '<i class="fas fa-exclamation-triangle"></i>' : '<i class="fas fa-stethoscope"></i>'}
                     ${formatSymptomName(condition.symptom)}
                 </h4>
-                <p><strong>Possible Conditions:</strong> ${condition.possible_conditions.join(', ')}</p>
-                <p><strong>Severity:</strong> ${condition.severity}</p>
+                <p><strong>Possible Conditions:</strong> ${condition.conditions.join(', ')}</p>
+                <p><strong>Severity:</strong> <span class="severity-badge ${condition.severity.replace(/\s+/g, '-')}">${condition.severity}</span></p>
                 <p><strong>Advice:</strong> ${condition.advice}</p>
             </div>
         `).join('');
     }
 
     resultsDiv.style.display = 'block';
-    resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ============================================
-// FIRST AID FUNCTIONS
+// FIRST AID DATA
 // ============================================
 const firstAidData = {
     burns: {
@@ -472,7 +807,7 @@ const firstAidData = {
             { title: 'Pain Relief', desc: 'Take over-the-counter pain relievers like paracetamol if needed.' },
             { title: 'Seek Medical Help', desc: 'For severe burns (deep, large, or on face/hands/genitals), seek immediate medical attention.' }
         ],
-        emergency: 'Call emergency services if the burn is deep, covers a large area, or is on the face, hands, feet, genitals, or major joints.'
+        emergency: 'Call emergency services (108) if the burn is deep, covers a large area, or is on the face, hands, feet, genitals, or major joints.'
     },
     cuts: {
         title: 'First Aid for Cuts and Bleeding',
@@ -484,7 +819,7 @@ const firstAidData = {
             { title: 'Cover the Wound', desc: 'Cover with a sterile bandage or adhesive bandage.' },
             { title: 'Change Dressing', desc: 'Change the bandage daily or whenever it becomes wet or dirty.' }
         ],
-        emergency: 'Call emergency services if bleeding does not stop after 10 minutes of continuous pressure.'
+        emergency: 'Call emergency services (108) if bleeding does not stop after 10 minutes of continuous pressure.'
     },
     choking: {
         title: 'First Aid for Choking',
@@ -496,15 +831,15 @@ const firstAidData = {
             { title: 'Quick Upward Thrusts', desc: 'Grasp your fist with the other hand and give quick, upward thrusts.' },
             { title: 'Repeat', desc: 'Continue cycles of 5 back blows and 5 abdominal thrusts until the object is expelled.' }
         ],
-        emergency: 'Call emergency services immediately if the person cannot breathe, speak, or cough.'
+        emergency: 'Call emergency services (108) immediately if the person cannot breathe, speak, or cough.'
     },
     cpr: {
         title: 'CPR (Cardiopulmonary Resuscitation)',
         steps: [
             { title: 'Check Responsiveness', desc: 'Tap the person and shout "Are you okay?" Check if they are breathing.' },
-            { title: 'Call Emergency', desc: 'Call emergency services immediately or ask someone else to call.' },
+            { title: 'Call Emergency', desc: 'Call emergency services (108) immediately or ask someone else to call.' },
             { title: 'Position', desc: 'Place the person on their back on a firm, flat surface.' },
-            { title: 'Chest Compressions', desc: 'Give 30 chest compressions: push hard and fast in the center of the chest, 2 inches deep.' },
+            { title: 'Chest Compressions', desc: 'Give 30 chest compressions: push hard and fast in the center of the chest, 2 inches deep at 100-120 per minute.' },
             { title: 'Open Airway', desc: 'Tilt the head back and lift the chin to open the airway.' },
             { title: 'Rescue Breaths', desc: 'Give 2 rescue breaths. Pinch the nose, make a seal over the mouth, and blow for 1 second each.' }
         ],
@@ -520,7 +855,7 @@ const firstAidData = {
             { title: 'Watch for Shock', desc: 'Monitor for signs of shock: pale skin, rapid breathing, weakness.' },
             { title: 'Keep Warm', desc: 'Cover the person with a blanket to keep them warm and comfortable.' }
         ],
-        emergency: 'All suspected fractures require professional medical treatment. Call emergency services.'
+        emergency: 'All suspected fractures require professional medical treatment. Call emergency services (108).'
     },
     nosebleed: {
         title: 'First Aid for Nosebleeds',
@@ -543,14 +878,14 @@ function showFirstAidDetail(emergencyType) {
     const detailDiv = elements.firstaidDetail;
 
     detailDiv.innerHTML = `
-        <div class="firstaid-steps">
-            <button class="btn-outline" onclick="hideFirstAidDetail()" style="margin-bottom: 20px;">
+        <div class="firstaid-steps" style="animation: fadeIn 0.5s ease;">
+            <button class="btn-outline" onclick="hideFirstAidDetail()" style="margin-bottom: 24px;">
                 <i class="fas fa-arrow-left"></i> Back to First Aid
             </button>
             <h3>${data.title}</h3>
             <ol class="step-list">
                 ${data.steps.map((step, index) => `
-                    <li>
+                    <li style="animation: slideInRight 0.4s ease ${index * 0.1}s both;">
                         <span class="step-number">${index + 1}</span>
                         <div class="step-content">
                             <h4>${step.title}</h4>
@@ -559,10 +894,10 @@ function showFirstAidDetail(emergencyType) {
                     </li>
                 `).join('')}
             </ol>
-            <div class="emergency-callout">
+            <div class="emergency-callout" style="animation: pulse 2s infinite;">
                 <i class="fas fa-exclamation-triangle"></i>
                 <div>
-                    <h4>When to Call Emergency Services</h4>
+                    <h4>When to Call Emergency Services (108)</h4>
                     <p>${data.emergency}</p>
                 </div>
             </div>
@@ -570,7 +905,7 @@ function showFirstAidDetail(emergencyType) {
     `;
 
     detailDiv.style.display = 'block';
-    detailDiv.scrollIntoView({ behavior: 'smooth' });
+    detailDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function hideFirstAidDetail() {
@@ -578,7 +913,7 @@ function hideFirstAidDetail() {
 }
 
 // ============================================
-// HEALTH TIPS FUNCTIONS
+// HEALTH TIPS DATA
 // ============================================
 const healthTipsData = {
     general: [
@@ -647,8 +982,8 @@ function loadHealthTips(category) {
     const tips = healthTipsData[category] || healthTipsData.general;
     const container = elements.tipsContainer;
 
-    container.innerHTML = tips.map(tip => `
-        <div class="tip-card">
+    container.innerHTML = tips.map((tip, i) => `
+        <div class="tip-card" style="animation: fadeInScale 0.5s ease ${i * 0.05}s both;">
             <div class="tip-icon">
                 <i class="fas ${tip.icon}"></i>
             </div>
@@ -663,6 +998,9 @@ function loadHealthTips(category) {
 function openModal(modal) {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    const content = modal.querySelector('.modal-content');
+    content.style.animation = 'modalSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
 }
 
 function closeModal(modal) {
@@ -679,14 +1017,13 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Handle window resize
 window.addEventListener('resize', () => {
     if (window.innerWidth > 1024) {
         elements.sidebar.classList.remove('open');
     }
 });
 
-// Expose functions to global scope for onclick handlers
+// Expose functions to global scope
 window.useSuggestion = useSuggestion;
 window.removeSymptom = removeSymptom;
 window.hideFirstAidDetail = hideFirstAidDetail;
