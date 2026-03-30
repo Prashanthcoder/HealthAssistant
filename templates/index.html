@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Virtual Healthcare Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>HealthAssist</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3>Quick Access</h3>
+                    <ul>
+                        <li class="active" data-section="chat">
+                            <i class="fas fa-comments"></i>
+                            <span>Chat Assistant</span>
+                        </li>
+                        <li data-section="symptoms">
+                            <i class="fas fa-stethoscope"></i>
+                            <span>Symptom Checker</span>
+                        </li>
+                        <li data-section="firstaid">
+                            <i class="fas fa-first-aid"></i>
+                            <span>First Aid Guide</span>
+                        </li>
+                        <li data-section="healthtips">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Health Tips</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Health Topics</h3>
+                    <ul>
+                        <li data-topic="general">
+                            <i class="fas fa-user-md"></i>
+                            <span>General Health</span>
+                        </li>
+                        <li data-topic="nutrition">
+                            <i class="fas fa-apple-alt"></i>
+                            <span>Nutrition & Diet</span>
+                        </li>
+                        <li data-topic="mental">
+                            <i class="fas fa-brain"></i>
+                            <span>Mental Health</span>
+                        </li>
+                        <li data-topic="exercise">
+                            <i class="fas fa-running"></i>
+                            <span>Exercise & Fitness</span>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="emergency-banner">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Emergency? Call 108</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>Intelligent Virtual Healthcare Assistant</h1>
+                </div>
+                <div class="header-right">
+                    <div class="status-indicator">
+                        <span class="status-dot online"></span>
+                        <span>Online</span>
+                    </div>
+                    <button class="header-btn" title="Clear Chat" id="clearChat">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <button class="header-btn" title="Help" id="helpBtn">
+                        <i class="fas fa-question-circle"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Chat Section -->
+            <section class="content-section active" id="chatSection">
+                <div class="chat-container">
+                    <!-- Welcome Screen -->
+                    <div class="welcome-screen" id="welcomeScreen">
+                        <div class="welcome-content">
+                            <div class="welcome-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h2>Welcome to Your Healthcare Assistant</h2>
+                            <p>I'm here to provide instant, reliable healthcare information. Ask me about symptoms,
+                                diseases, first aid, nutrition, mental health, and more.</p>
+
+                            <div class="quick-suggestions">
+                                <h3>Popular Questions</h3>
+                                <div class="suggestion-chips">
+                                    <button class="chip" data-question="What are the symptoms of COVID-19?">
+                                        <i class="fas fa-virus"></i>
+                                        COVID-19 symptoms
+                                    </button>
+                                    <button class="chip" data-question="How to treat a headache?">
+                                        <i class="fas fa-head-side-virus"></i>
+                                        Headache relief
+                                    </button>
+                                    <button class="chip" data-question="First aid for burns">
+                                        <i class="fas fa-fire"></i>
+                                        Burn first aid
+                                    </button>
+                                    <button class="chip" data-question="Tips for better sleep">
+                                        <i class="fas fa-bed"></i>
+                                        Sleep tips
+                                    </button>
+                                    <button class="chip" data-question="How to reduce stress?">
+                                        <i class="fas fa-spa"></i>
+                                        Stress relief
+                                    </button>
+                                    <button class="chip" data-question="Healthy diet recommendations">
+                                        <i class="fas fa-carrot"></i>
+                                        Healthy diet
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Messages will be dynamically added here -->
+                    </div>
+
+                    <!-- Typing Indicator -->
+                    <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span>Assistant is typing...</span>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input-container">
+                    <div class="input-wrapper">
+                        <button class="input-btn attachment-btn" title="Attach file">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <textarea id="messageInput" placeholder="Type your health question here..." rows="1"
+                            maxlength="500"></textarea>
+                        <button class="input-btn voice-btn" title="Voice input">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="send-btn" id="sendBtn" title="Send message">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="input-footer">
+                        <span class="disclaimer">
+                            <i class="fas fa-info-circle"></i>
+                            This is for informational purposes only. For medical emergencies, call your local emergency
+                            number.
+                        </span>
+                        <span class="char-count" id="charCount">0/500</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Symptoms Checker Section -->
+            <section class="content-section" id="symptomsSection">
+                <div class="section-header">
+                    <h2><i class="fas fa-stethoscope"></i> Symptom Checker</h2>
+                    <p>Select your symptoms to get possible conditions and recommendations</p>
+                </div>
+
+                <div class="symptoms-container">
+                    <div class="symptoms-grid">
+                        <div class="symptom-card" data-symptom="fever">
+                            <i class="fas fa-thermometer-full"></i>
+                            <span>Fever</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="headache">
+                            <i class="fas fa-head-side-virus"></i>
+                            <span>Headache</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="cough">
+                            <i class="fas fa-head-side-cough"></i>
+                            <span>Cough</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="sore throat">
+                            <i class="fas fa-head-side-mask"></i>
+                            <span>Sore Throat</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="stomach pain">
+                            <i class="fas fa-procedures"></i>
+                            <span>Stomach Pain</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="nausea">
+                            <i class="fas fa-dizzy"></i>
+                            <span>Nausea</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="fatigue">
+                            <i class="fas fa-tired"></i>
+                            <span>Fatigue</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="shortness of breath">
+                            <i class="fas fa-lungs"></i>
+                            <span>Shortness of Breath</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="chest pain">
+                            <i class="fas fa-heart-broken"></i>
+                            <span>Chest Pain</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="rash">
+                            <i class="fas fa-allergies"></i>
+                            <span>Skin Rash</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="dizziness">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Dizziness</span>
+                        </div>
+                        <div class="symptom-card" data-symptom="body ache">
+                            <i class="fas fa-bone"></i>
+                            <span>Body Ache</span>
+                        </div>
+                    </div>
+
+                    <div class="selected-symptoms" id="selectedSymptoms">
+                        <h3>Selected Symptoms</h3>
+                        <div class="selected-list" id="selectedList">
+                            <p class="no-selection">Click on symptoms above to select them</p>
+                        </div>
+                        <button class="btn-primary" id="checkSymptomsBtn" disabled>
+                            <i class="fas fa-search"></i> Check Symptoms
+                        </button>
+                    </div>
+                </div>
+
+                <div class="symptoms-results" id="symptomsResults" style="display: none;">
+                    <!-- Results will be displayed here -->
+                </div>
+            </section>
+
+            <!-- First Aid Section -->
+            <section class="content-section" id="firstaidSection">
+                <div class="section-header">
+                    <h2><i class="fas fa-first-aid"></i> First Aid Guide</h2>
+                    <p>Quick reference for emergency situations</p>
+                </div>
+
+                <div class="firstaid-grid">
+                    <div class="firstaid-card" data-emergency="burns">
+                        <div class="card-icon burns">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3>Burns</h3>
+                        <p>Learn how to treat thermal, chemical, and electrical burns</p>
+                        <button class="btn-outline">View Guide</button>
+                    </div>
+
+                    <div class="firstaid-card" data-emergency="cuts">
+                        <div class="card-icon cuts">
+                            <i class="fas fa-band-aid"></i>
+                        </div>
+                        <h3>Cuts & Bleeding</h3>
+                        <p>Steps to control bleeding and treat wounds</p>
+                        <button class="btn-outline">View Guide</button>
+                    </div>
+
+                    <div class="firstaid-card" data-emergency="choking">
+                        <div class="card-icon choking">
+                            <i class="fas fa-hand-paper"></i>
+                        </div>
+                        <h3>Choking</h3>
+                        <p>Heimlich maneuver and emergency response</p>
+                        <button class="btn-outline">View Guide</button>
+                    </div>
+
+                    <div class="firstaid-card" data-emergency="cpr">
+                        <div class="card-icon cpr">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3>CPR</h3>
+                        <p>Cardiopulmonary resuscitation techniques</p>
+                        <button class="btn-outline">View Guide</button>
+                    </div>
+
+                    <div class="firstaid-card" data-emergency="fracture">
+                        <div class="card-icon fracture">
+                            <i class="fas fa-bone"></i>
+                        </div>
+                        <h3>Fractures</h3>
+                        <p>How to immobilize and handle broken bones</p>
+                        <button class="btn-outline">View Guide</button>
+                    </div>
+
+                    <div class="firstaid-card" data-emergency="nosebleed">
+                        <div class="card-icon nosebleed">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h3>Nosebleeds</h3>
+                        <p>Proper technique to stop nose bleeding</p>
+                        <button class="btn-outline">View Guide</button>
+                    </div>
+                </div>
+
+                <div class="firstaid-detail" id="firstaidDetail" style="display: none;">
+                    <!-- First aid details will be displayed here -->
+                </div>
+            </section>
+
+            <!-- Health Tips Section -->
+            <section class="content-section" id="healthtipsSection">
+                <div class="section-header">
+                    <h2><i class="fas fa-lightbulb"></i> Health Tips</h2>
+                    <p>Daily wellness advice for a healthier life</p>
+                </div>
+
+                <div class="tips-categories">
+                    <button class="tip-category active" data-category="general">
+                        <i class="fas fa-heart"></i> General
+                    </button>
+                    <button class="tip-category" data-category="nutrition">
+                        <i class="fas fa-apple-alt"></i> Nutrition
+                    </button>
+                    <button class="tip-category" data-category="mental_health">
+                        <i class="fas fa-brain"></i> Mental Health
+                    </button>
+                    <button class="tip-category" data-category="exercise">
+                        <i class="fas fa-running"></i> Exercise
+                    </button>
+                    <button class="tip-category" data-category="sleep">
+                        <i class="fas fa-bed"></i> Sleep
+                    </button>
+                </div>
+
+                <div class="tips-container" id="tipsContainer">
+                    <!-- Tips will be loaded here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-question-circle"></i> How to Use</h2>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="help-section">
+                    <h3><i class="fas fa-comments"></i> Chat Assistant</h3>
+                    <p>Ask any health-related questions in the chat. I can help with:</p>
+                    <ul>
+                        <li>Symptom information and guidance</li>
+                        <li>Disease and condition explanations</li>
+                        <li>Medication information</li>
+                        <li>General health advice</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-stethoscope"></i> Symptom Checker</h3>
+                    <p>Select your symptoms to get possible conditions and recommendations.</p>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-first-aid"></i> First Aid Guide</h3>
+                    <p>Quick reference for emergency situations. Remember to call emergency services for serious
+                        conditions.</p>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Important Disclaimer</h3>
+                    <p class="disclaimer-text">
+                        This virtual assistant provides general health information only and is not a substitute for
+                        professional medical advice, diagnosis, or treatment. Always seek the advice of your physician
+                        or other qualified health provider with any questions you may have regarding a medical
+                        condition.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Modal -->
+    <div class="modal" id="emergencyModal">
+        <div class="modal-content emergency">
+            <div class="modal-header emergency-header">
+                <h2><i class="fas fa-ambulance"></i> Emergency Information</h2>
+                <button class="modal-close" id="closeEmergencyModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="emergency-alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>If you or someone else is experiencing a life-threatening emergency, <strong>call your local
+                            emergency number immediately</strong>.</p>
+                </div>
+
+                <div class="emergency-numbers">
+                    <h3>Emergency Numbers (India)</h3>
+                    <div class="number-list">
+                        <div class="number-item">
+                            <span class="number">108</span>
+                            <span class="label">Ambulance</span>
+                        </div>
+                        <div class="number-item">
+                            <span class="number">102</span>
+                            <span class="label">Medical Emergency</span>
+                        </div>
+                        <div class="number-item">
+                            <span class="number">104</span>
+                            <span class="label">Health Helpline</span>
+                        </div>
+                        <div class="number-item">
+                            <span class="number">1097</span>
+                            <span class="label">AIDS Helpline</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+
+</html>

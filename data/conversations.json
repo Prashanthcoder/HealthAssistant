@@ -1,0 +1,62 @@
+[
+  {
+    "timestamp": "2026-03-30T22:52:32.632492",
+    "user_message": "Hello",
+    "bot_response": "Hello! I'm your Intelligent Virtual Healthcare Assistant. How can I help you today?"
+  },
+  {
+    "timestamp": "2026-03-30T22:52:37.681266",
+    "user_message": "I have a headache",
+    "bot_response": "I understand you're experiencing symptoms. Could you tell me more about what you're feeling? Common symptoms include fever, headache, cough, body ache, nausea, or fatigue.\n\nI noticed you mentioned 'ache'. "
+  },
+  {
+    "timestamp": "2026-03-30T22:52:42.227060",
+    "user_message": "What causes headache?",
+    "bot_response": "I understand you're experiencing symptoms. Could you tell me more about what you're feeling? Common symptoms include fever, headache, cough, body ache, nausea, or fatigue.\n\nI noticed you mentioned 'ache'. "
+  },
+  {
+    "timestamp": "2026-03-30T22:52:47.931316",
+    "user_message": "When to see a doctor",
+    "bot_response": "Regular check-ups are essential for maintaining good health. Are you looking to schedule a general check-up or do you have specific concerns?"
+  },
+  {
+    "timestamp": "2026-03-30T22:52:54.272101",
+    "user_message": "Check-up frequency",
+    "bot_response": "I'm here to help with your health questions! I can provide information on symptoms, diseases, medications, first aid, nutrition, mental health, and more. What would you like to know?"
+  },
+  {
+    "timestamp": "2026-03-30T22:53:06.183674",
+    "user_message": "health tips",
+    "bot_response": "Your health is important! Ask me about any health-related topic - from common symptoms to disease prevention, I'm here to assist."
+  },
+  {
+    "timestamp": "2026-03-30T22:55:21.856308",
+    "user_message": "Tell me about general health tips",
+    "bot_response": "Your health is important! Ask me about any health-related topic - from common symptoms to disease prevention, I'm here to assist."
+  },
+  {
+    "timestamp": "2026-03-30T22:55:24.603129",
+    "user_message": "What are some healthy eating recommendations?",
+    "bot_response": "Good nutrition is essential for health! I can provide dietary advice and nutritional information. What are your nutrition goals?"
+  },
+  {
+    "timestamp": "2026-03-30T22:55:27.564471",
+    "user_message": "How can I improve my mental health?",
+    "bot_response": "Taking care of your mental wellbeing is crucial. Would you like information about stress management, anxiety, depression, or general mental health tips?"
+  },
+  {
+    "timestamp": "2026-03-30T22:55:29.183847",
+    "user_message": "What exercises should I do to stay fit?",
+    "bot_response": "I'm here to help with your health questions! I can provide information on symptoms, diseases, medications, first aid, nutrition, mental health, and more. What would you like to know?"
+  },
+  {
+    "timestamp": "2026-03-30T22:58:36.526294",
+    "user_message": "How can I improve my mental health?",
+    "bot_response": "Mental health is just as important as physical health. I'm here to listen and provide support. What's on your mind?"
+  },
+  {
+    "timestamp": "2026-03-30T23:00:38.677614",
+    "user_message": "hey",
+    "bot_response": "Greetings! I'm here to provide reliable healthcare information. What would you like to know?"
+  }
+]
